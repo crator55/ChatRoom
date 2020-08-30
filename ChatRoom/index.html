@@ -16,6 +16,7 @@
         <input type="text" id="message" />
         <input type="button" id="sendmessage" value="Send" />
         <input type="hidden" id="displayname" />
+        <input type="hidden" id="password" />
         <ul id="discussion">
         </ul>
     </div>
@@ -29,6 +30,43 @@
     <!--Add script to update the page and send messages.-->
     <script type="text/javascript">
         $(function () {
+          
+
+            var url = 'http://localhost:49861/api/Authentication/Process';
+            function Showprompts(){
+                $('#displayname').val(prompt('Enter your name:', ''));
+                $('#password').val(prompt('Enter your password:', ''));
+            }
+            // Get the user name and store it to prepend to messages.
+          
+            Showprompts();
+            GetAuth();
+            function GetAuth() {
+            var data = {
+                "name": $('#displayname').val(),
+                "password": window.btoa($('#password').val())
+            };
+
+           
+                fetch(url, {
+                    method: 'POST',
+                    body: JSON.stringify(data),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+
+                }).then(res =>
+                    res.json()
+                ).then(resul => ShowResponse(resul))
+                    .catch(error => console.error('Error:', error.text()));
+            }
+            function ShowResponse({ ResponseApi }) {
+                if (ResponseApi == false) {
+                    Showprompts();
+                }
+               
+            }
+          
             // Declare a proxy to reference the hub.
             var chat = $.connection.chatHub;
             // Create a function that the hub can call to broadcast messages.
@@ -40,8 +78,6 @@
                 $('#discussion').append('<li><strong>' + encodedName
                     + '</strong>:&nbsp;&nbsp;' + encodedMsg + '</li>');
             };
-            // Get the user name and store it to prepend to messages.
-            $('#displayname').val(prompt('Enter your name:', ''));
             // Set initial focus to message input box.
             $('#message').focus();
             // Start the connection.
