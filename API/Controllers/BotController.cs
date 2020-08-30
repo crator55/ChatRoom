@@ -16,8 +16,8 @@ namespace API.Controllers
         [HttpPost]
         public IHttpActionResult GetResponseBot(Bot bot)
         {
-
-            string result = BotAiResponse.GetResponseBot(bot.Command);
+            BotAiResponse botAiResponse = new BotAiResponse();
+            string result = botAiResponse.GetResponseBot(bot.Command);
             return Ok(result);
 
         }

@@ -6,40 +6,45 @@ using System.Web;
 using System.IO;
 using API.Models;
 using System.Web.Razor.Tokenizer.Symbols;
+using System.Net.Http;
+using API.Services;
 
 namespace API.BotAi
 {
-    public class BotAiResponse
+    public class BotAiResponse : IStockGetter
     {
-        public static string GetResponseBot(string message)
+      
+        public string GetResponseBot(string message)
         {
-            List<CsvFile> csvFiles = new List<CsvFile>();
-            string[] data = File.ReadAllLines(@"C:\Users\rapto\Downloads\aapl.us.csv");
-            for (int i = 1; i < data.Count(); i++)
+            HttpClient Client = new HttpClient();
+            using (HttpResponseMessage response = Client.GetAsync($"https://stooq.com/q/l/?s={message}&f=sd2t2ohlcv&h&e=csv").Result)
+            using (HttpContent content = response.Content)
             {
-                string[] fields = data[i].Split(',');
-                    CsvFile csvFile = new CsvFile()
-                    {
-                        Symbol =fields[0],
-                        Date = DateTime.Parse(fields[1]),
-                        Time = TimeSpan.Parse(fields[2]),
-                        Open = decimal.Parse(fields[3]),
-                        High = decimal.Parse(fields[4]),
-                        Low = decimal.Parse(fields[5]),
-                        Close = decimal.Parse(fields[6]),
-                        Volume = Int32.Parse(fields[7])
-                    };
-                    csvFiles.Add(csvFile);
+                var callResponse = content.ReadAsStringAsync().Result;
+                if (response.StatusCode != System.Net.HttpStatusCode.OK)
+                    throw new ArgumentException(callResponse);
+                var data = callResponse.Substring(callResponse.IndexOf(Environment.NewLine, StringComparison.Ordinal) + 2);
+                var fields = data.Split(',');
+
+                CsvFile csvFile = new CsvFile()
+                {
+                    Symbol = fields[0],
+                    Date = !fields[1].Contains("N/D") ? DateTime.Parse(fields[1]):default,
+                    Time = !fields[2].Contains("N/D") ? TimeSpan.Parse(fields[2]) : default,
+                    Open = !fields[3].Contains("N/D") ? decimal.Parse(fields[3]) : default,
+                    High = !fields[4].Contains("N/D") ? decimal.Parse(fields[4]) : default,
+                    Low = !fields[5].Contains("N/D") ? decimal.Parse(fields[5]) : default,
+                    Close = !fields[6].Contains("N/D") ? decimal.Parse(fields[6]) : default,
+                    Volume = !fields[7].Contains("N/D") ? Int32.Parse(fields[7]) : default
+                };
+                if (csvFile.Symbol.Equals(message.ToUpper()))
+                {
+                    return $"{csvFile.Symbol} quote is ${csvFile.Close} per share";
+                }
 
             }
-            foreach (var item in csvFiles)
-            {
-                if (item.Symbol== message)
-                {
-                    string response = $"{item.Symbol} quote is ${item.High} per share";
-                    return response;
-                }
-            }
+
+
             return "No command founded.";
         }
     }

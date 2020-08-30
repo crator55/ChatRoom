@@ -176,6 +176,7 @@
     <Compile Include="Models\User.cs" />
     <Compile Include="Authentication\AuthenticationProcess.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\IStockGetter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
