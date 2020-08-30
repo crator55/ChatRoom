@@ -25,7 +25,6 @@ namespace API.BotAi
                     throw new ArgumentException(callResponse);
                 var data = callResponse.Substring(callResponse.IndexOf(Environment.NewLine, StringComparison.Ordinal) + 2);
                 var fields = data.Split(',');
-
                 CsvFile csvFile = new CsvFile()
                 {
                     Symbol = fields[0],

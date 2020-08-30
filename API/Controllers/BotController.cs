@@ -10,9 +10,13 @@ using System.Web.Http.Cors;
 
 namespace API.Controllers
 {
+
+    [RoutePrefix("api/bot")]
+
     [EnableCors(origins: "https://localhost:44341", headers: "*", methods: "*")]
     public class BotController : ApiController
     {
+        [Route("GetStock")]
         [HttpPost]
         public IHttpActionResult GetResponseBot(Bot bot)
         {

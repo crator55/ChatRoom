@@ -2,45 +2,47 @@
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-
 using Microsoft.AspNet.SignalR;
 using Newtonsoft.Json;
+using ChatRoom.Consts;
 
 namespace SignalRChat
 {
     public  class ChatHub : Hub
     {
+        readonly Const @const = new Const();
         static readonly HttpClient client = new HttpClient();
         public async Task Send(string name, string message)
         {
-           
-            if (message.Contains("/stock="))
+            if (message.Contains(@const.CodeBot))
             {
-            string botMessage= message.Replace("/stock=", "");
-                try
-                {
-                   var newJson= new  { Command= botMessage };
-                    var json = JsonConvert.SerializeObject(newJson);
-                    var data = new StringContent(json, Encoding.UTF8, "application/json");
-
-                    var url = "http://localhost:49861/api/Bot/GetResponseBot";
-                    var client = new HttpClient();
-
-                    var response = await client.PostAsync(url, data);
-                    string botName = "RabbitMQ";
-                    string result = response.Content.ReadAsStringAsync().Result;
-                    Clients.All.broadcastMessage(botName, result);
-                }
-                catch (HttpRequestException e)
-                {
-                    throw new Exception(e.Message);
-                }
+                string botMessage= message.Replace(@const.CodeBot, "");
+                string result = await GetValueStock(botMessage);
+                Clients.All.broadcastMessage(@const.BotName, result);
             }
             else
             {
                 Clients.All.broadcastMessage(name, message);
             }
-          
+        }
+
+        private async  Task<string> GetValueStock(string botMessage)
+        {
+            try
+            {
+                var newJson = new { Command = botMessage };
+                var json = JsonConvert.SerializeObject(newJson);
+                var data = new StringContent(json, Encoding.UTF8, "application/json");
+                var url = @const.Url;
+                var client = new HttpClient();
+                var response = await client.PostAsync(url, data);
+                string result = response.Content.ReadAsStringAsync().Result;
+                return result;
+            }
+            catch (HttpRequestException e)
+            {
+                throw new Exception(e.Message);
+            }
         }
     }
 }

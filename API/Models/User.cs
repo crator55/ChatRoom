@@ -9,20 +9,17 @@ namespace API.Models
     {
         public string Name { get; set; }
         public string Password { get; set; }
-
-
-
-
         public static List<User> Userlists()
         {
             List<User> users = new List<User>();
             User user = new User()
-            {
+            {//password coded with Base64 
                 Name = "Diego",
                 Password = "MTIzNDU2Nzg5"
             };
             User user2 = new User()
             {
+                //password coded with Base64 
                 Name = "Ana",
                 Password = "OTg3NjU0MzIx"
             };

@@ -18,7 +18,7 @@ namespace API.Authentication
             User listedUser = users.FirstOrDefault(x=>x.Name==user.Name);
             if (listedUser!=null)
             {
-                response.ResponseApi = user.Password == listedUser.Password? true : response.ResponseApi;
+                response.ResponseApi = user.Password == listedUser.Password || response.ResponseApi;
             }
           
             return response;
