@@ -10,8 +10,10 @@ namespace API.Authentication
     {
         public static Response ProcessAuthentication(User user)
         {
-            Response response = new Response();
-            response.ResponseApi = false;
+            Response response = new Response
+            {
+                ResponseApi = false
+            };
             List<User> users = User.Userlists();
             User listedUser = users.FirstOrDefault(x=>x.Name==user.Name);
             if (listedUser!=null)

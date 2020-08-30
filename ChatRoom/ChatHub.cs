@@ -1,21 +1,47 @@
 ﻿using System;
-using System.Web;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
+
 using Microsoft.AspNet.SignalR;
+using Newtonsoft.Json;
+
 namespace SignalRChat
 {
-    public class ChatHub : Hub
+    public  class ChatHub : Hub
     {
-        public void Send(string name, string message)
+        static readonly HttpClient client = new HttpClient();
+        public async Task Send(string name, string message)
         {
+           
             if (message.Contains("/stock="))
             {
-            string botMesassge= message.Replace("/stock=", "");
-                if (true)
+            string botMessage= message.Replace("/stock=", "");
+                try
                 {
+                   var newJson= new  { Command= botMessage };
+                    var json = JsonConvert.SerializeObject(newJson);
+                    var data = new StringContent(json, Encoding.UTF8, "application/json");
 
+                    var url = "http://localhost:49861/api/Bot/GetResponseBot";
+                    var client = new HttpClient();
+
+                    var response = await client.PostAsync(url, data);
+                    string botName = "RabbitMQ";
+                    string result = response.Content.ReadAsStringAsync().Result;
+                    Clients.All.broadcastMessage(botName, result);
+                }
+                catch (HttpRequestException e)
+                {
+                    throw new Exception(e.Message);
                 }
             }
-            Clients.All.broadcastMessage(name, message);
+            else
+            {
+                Clients.All.broadcastMessage(name, message);
+            }
+          
         }
     }
 }
