@@ -81,6 +81,7 @@ C:\Users\rapto\Desktop\ChatRoom\API\bin\System.Web.WebPages.Deployment.xml
 C:\Users\rapto\Desktop\ChatRoom\API\bin\System.Web.WebPages.Razor.xml
 C:\Users\rapto\Desktop\ChatRoom\API\bin\Antlr3.Runtime.pdb
 C:\Users\rapto\Desktop\ChatRoom\API\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+C:\Users\rapto\Desktop\ChatRoom\API\obj\Debug\API.csprojAssemblyReference.cache
 C:\Users\rapto\Desktop\ChatRoom\API\obj\Debug\API.csproj.CoreCompileInputs.cache
 C:\Users\rapto\Desktop\ChatRoom\API\obj\Debug\API.csproj.CopyComplete
 C:\Users\rapto\Desktop\ChatRoom\API\obj\Debug\API.dll

@@ -7,7 +7,14 @@ namespace SignalRChat
     {
         public void Send(string name, string message)
         {
-            // Call the broadcastMessage method to update clients.
+            if (message.Contains("/stock="))
+            {
+            string botMesassge= message.Replace("/stock=", "");
+                if (true)
+                {
+
+                }
+            }
             Clients.All.broadcastMessage(name, message);
         }
     }

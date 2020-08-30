@@ -40,11 +40,11 @@
             // Get the user name and store it to prepend to messages.
           
             Showprompts();
-            GetAuth();
-            function GetAuth() {
+            GetAuth($('#displayname').val(), $('#password').val());
+            function GetAuth(name, password) {
             var data = {
-                "name": $('#displayname').val(),
-                "password": window.btoa($('#password').val())
+                "name": name,
+                "password": window.btoa(password)
             };
 
            
@@ -61,10 +61,11 @@
                     .catch(error => console.error('Error:', error.text()));
             }
             function ShowResponse({ ResponseApi }) {
-                if (ResponseApi == false) {
+                console.log(ResponseApi);
+                if (ResponseApi === false) {
                     Showprompts();
+                    GetAuth($('#displayname').val(), $('#password').val());
                 }
-               
             }
           
             // Declare a proxy to reference the hub.

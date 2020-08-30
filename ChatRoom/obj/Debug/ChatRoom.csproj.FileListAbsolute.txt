@@ -77,4 +77,3 @@ C:\Users\rapto\Desktop\ChatRoom\ChatRoom\obj\Debug\ChatRoom.csproj.CoreCompileIn
 C:\Users\rapto\Desktop\ChatRoom\ChatRoom\obj\Debug\ChatRoom.csproj.CopyComplete
 C:\Users\rapto\Desktop\ChatRoom\ChatRoom\obj\Debug\ChatRoom.dll
 C:\Users\rapto\Desktop\ChatRoom\ChatRoom\obj\Debug\ChatRoom.pdb
-C:\Users\rapto\Desktop\ChatRoom\ChatRoom\obj\Debug\ChatRoom.csprojAssemblyReference.cache
