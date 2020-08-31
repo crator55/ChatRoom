@@ -170,7 +170,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Bot.cs" />
-    <Compile Include="Models\CsvFile.cs" />
+    <Compile Include="Models\Stock.cs" />
     <Compile Include="Models\Response.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Authentication\AuthenticationProcess.cs" />
